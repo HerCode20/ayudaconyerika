@@ -1,0 +1,94 @@
+import zim from "https://zimjs.org/cdn/018/zim";
+
+// see https://zimjs.com
+// and https://zimjs.com/learn
+// and https://zimjs.com/docs
+
+new Frame(FIT, 1024, 768, yellow, dark, ready, ["ai_alien08.png", "gf_Joti+One"], "https://assets.codepen.io/2104200/");
+function ready() {
+
+	// given F (Frame), S (Stage), W (width), H (height)
+    // put your code here
+	
+	// want to animate each letter so use LabelLetters() rather than Label() or LabelWords()
+	// for optimization we can say the letters will not be mouse interactive 
+	// we won't really be able to tell in this case
+	// cache letters for smoother animation
+	STYLE = {font:"Joti One", size:100, color:blue};
+	const title = new LabelLetters("Make Me Jump").noMouse().pos(0,60,CENTER);
+	title.loop(letter=>{
+		// cache letters for smoother animation
+		// any DisplayObject can have a shadow with sha() 
+		// and wiggle is propert, startAmount, minAmount, maxAmount, minTime, maxTime
+		letter.cache().sha(black.toAlpha(.5), 4,4,4).wiggle("rotation", 0, 5, 10, .2, .5)
+	})
+	STYLE = {};
+		
+	const alien = new Pic("ai_alien08.png");
+	alien.reg(CENTER, alien.height-20).center().cur().mov(-50,100).animate({
+		props:{y:"-100"}, // relative value with quotes
+		time:.27,
+		rewind:true
+	});
+
+	const shadow = alien
+		.clone()
+		.effect(new ShadowEffect({alpha:.8, hideObject:true}))
+		.loc(alien)
+		.mov(5)
+		.bot()
+		.ske(60)
+		.animate({
+			props:{x:"30", y:"-50", scale:.8},
+			time:.27,
+			rewind:true
+		});
+	
+	const toing = new Aud("toing.mp3", .7); // lazy load sound
+	alien.on("mousedown", ()=>{
+		toing.play();
+		alien.animate({
+			props:{y:"-100"},
+			time:.27,
+			rewind:true
+		});
+		shadow.animate({
+			props:{x:"30", y:"-50", scale:.8},
+			time:.27,
+			rewind:true
+		});
+	});
+	
+	
+	F.madeWith().pos(40,40,RIGHT,BOTTOM);
+	
+} // end ready
+
+// ~~~~~~~~~~~~~~~~~~~~~
+// If you see this... 
+// join us at https://zimjs.com/forum
+// ZIM leads to a wonderful life - trust us!
+// ~~~~~~~~~~~~~~~~~~~~~
+
+// Docs for items used:
+// https://zimjs.com/docs.html?item=Frame
+// https://zimjs.com/docs.html?item=Pic
+// https://zimjs.com/docs.html?item=Aud
+// https://zimjs.com/docs.html?item=LabelLetters
+// https://zimjs.com/docs.html?item=noMouse
+// https://zimjs.com/docs.html?item=effect
+// https://zimjs.com/docs.html?item=animate
+// https://zimjs.com/docs.html?item=wiggle
+// https://zimjs.com/docs.html?item=loop
+// https://zimjs.com/docs.html?item=cur
+// https://zimjs.com/docs.html?item=sha
+// https://zimjs.com/docs.html?item=pos
+// https://zimjs.com/docs.html?item=loc
+// https://zimjs.com/docs.html?item=mov
+// https://zimjs.com/docs.html?item=bot
+// https://zimjs.com/docs.html?item=ske
+// https://zimjs.com/docs.html?item=reg
+// https://zimjs.com/docs.html?item=center
+// https://zimjs.com/docs.html?item=ShadowEffect
+// https://zimjs.com/docs.html?item=toAlpha
+// https://zimjs.com/docs.html?item=STYLE
